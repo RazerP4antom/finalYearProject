@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stock Data</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Stock Data</h1>
+    <ul>
+      {% for item in stock_data %}
+      <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+
+    <h1>Research Report ICIC Direct</h1>
+    <p>{{ research_data_icic }}</p>
+
+    <h1>Research Report Economic Times India</h1>
+    <p>{{ research_data_ecotimes }}</p>
+    <a href="/">Back to form</a>
+  </body>
+</html>

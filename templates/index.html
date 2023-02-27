@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Get Stock Data</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"
+    />
+  </head>
+  <body>
+    <h1>Get Stock Data</h1>
+    <form method="POST" action="{{ url_for('get_stock_data_route') }}">
+      <label for="stock_symbol">Enter Company Name:</label>
+      <input
+        type="text"
+        id="stock_symbol"
+        class="autoComplete"
+        name="stock_symbol"
+        required
+      />
+      <button type="submit">Get data</button>
+    </form>
+
+    <script>
+      $(function () {
+        var availableSymbols = [
+          "Adani Green Energy Ltd",
+          "Adani Ports and Special Economic Zone Ltd",
+          "Asian Paints Ltd",
+          "Axis Bank Ltd",
+          "Bajaj Auto Ltd",
+          "Bajaj Finance Ltd",
+          "Bajaj Finserv Ltd",
+          "Bharat Petroleum Corporation Ltd",
+          "Bharti Airtel Ltd",
+          "Britannia Industries Ltd",
+          "Cipla Ltd",
+          "Coal India Ltd",
+          "Divi's Laboratories Ltd",
+          "Dr. Reddy's Laboratories Ltd",
+          "Eicher Motors Ltd",
+          "GAIL (India) Ltd",
+          "Grasim Industries Ltd",
+          "HCL Technologies Ltd",
+          "HDFC Asset Management Company Ltd",
+          "HDFC Bank Ltd",
+          "HDFC Life Insurance Company Ltd",
+          "Hero MotoCorp Ltd",
+          "Hindalco Industries Ltd",
+          "Hindustan Petroleum Corporation Ltd",
+          "Hindustan Unilever Ltd",
+          "Housing Development Finance Corporation Ltd",
+          "ICICI Bank Ltd",
+          "Indian Oil Corporation Ltd",
+          "IndusInd Bank Ltd",
+          "Infosys Ltd",
+          "ITC Ltd",
+          "JSW Steel Ltd",
+          "Kotak Mahindra Bank Ltd",
+          "Larsen & Toubro Ltd",
+          "Mahindra & Mahindra Ltd",
+          "Maruti Suzuki India Ltd",
+          "Nestle India Ltd",
+          "Oil and Natural Gas Corporation Ltd",
+          "Petronet LNG Ltd",
+          "Power Grid Corporation of India Ltd",
+          "Reliance Industries Ltd",
+          "SBI Life Insurance Company Ltd",
+          "Shree Cement Ltd",
+          "State Bank of India",
+          "Tata Consultancy Services Ltd",
+          "Tata Consumer Products Ltd",
+          "Tata Motors Ltd",
+          "Tata Steel Ltd",
+          "Tech Mahindra Ltd",
+          "Titan Company Ltd",
+          "Torrent Power Ltd",
+          "Ultratech Cement Ltd",
+          "United Breweries Ltd",
+          "Wipro Ltd",
+          "Zee Entertainment Enterprises Ltd",
+          "Aditya Birla Fashion and Retail Ltd",
+          "Ambuja Cements Ltd",
+          "Apollo Hospitals Enterprise Ltd",
+          "Ashok Leyland Ltd",
+          "Aurobindo Pharma Ltd",
+          "Avenue Supermarts Ltd",
+          "Bajaj Holdings & Investment Ltd",
+          "Bandhan Bank Ltd",
+          "Berger Paints India Ltd",
+          "Bosch Ltd",
+          "Cadila Healthcare Ltd",
+          "Canara Bank",
+          "Castrol India Ltd",
+          "Crompton Greaves Consumer Electricals Ltd",
+          "Dabur India Ltd",
+          "Deepak Nitrite Ltd",
+          "Emami Ltd",
+          "Engineers India Ltd",
+          "Federal Bank Ltd",
+          "Glenmark Pharmaceuticals Ltd",
+          "Godrej Consumer Products Ltd",
+          "Godrej Properties Ltd",
+          "Havells India Ltd",
+          "Hero MotoCorp Ltd",
+          "Hindustan Zinc Ltd",
+          "India Cements Ltd",
+          "Indian Railway Catering and Tourism Corporation Ltd",
+          "IndiGo",
+          "InterGlobe Aviation Ltd",
+          "Jubilant FoodWorks Ltd",
+          "Jindal Steel & Power Ltd",
+          "L&T Finance Holdings Ltd",
+          "LIC Housing Finance Ltd",
+          "Mphasis Ltd",
+          "NHPC Ltd",
+          "NIIT Technologies Ltd",
+          "Piramal Enterprises Ltd",
+          "Punjab National Bank",
+          "Ramco Cements Ltd",
+          "SBI Cards and Payment Services Ltd",
+          "Siemens Ltd",
+          "Sun Pharmaceutical Industries Ltd",
+          "Syngene International Ltd",
+          "Tata Communications Ltd",
+          "Tata Power Company Ltd",
+          "TVS Motor Company Ltd",
+          "UPL Ltd",
+          "Vedanta Ltd",
+          "Wipro Ltd",
+          "Adani Power Ltd",
+          "Alkem Laboratories Ltd",
+          "Ashoka Buildcon Ltd",
+          "Bharat Electronics Ltd",
+          "Cholamandalam Investment and Finance Company Ltd",
+          "Container Corporation of India Ltd",
+          "Cummins India Ltd",
+          "Dalmia Bharat Ltd",
+          "Endurance Technologies Ltd",
+          "GMR Infrastructure Ltd",
+          "Gujarat Gas Ltd",
+          "HDFC Standard Life Insurance Company Ltd",
+          "Hindustan Aeronautics Ltd",
+          "Indian Bank",
+          "Indraprastha Gas Ltd",
+          "InterGlobe Hotels Ltd",
+          "Jindal Stainless Ltd",
+          "Jubilant Pharmova Ltd",
+          "Lupin Ltd",
+          "Mahindra & Mahindra Financial Services Ltd",
+          "Mindtree Ltd",
+          "Muthoot Finance Ltd",
+          "Natco Pharma Ltd",
+          "NIACL",
+          "Nippon Life India Asset Management Ltd",
+          "Oil India Ltd",
+          "Pidilite Industries Ltd",
+          "Power Finance Corporation Ltd",
+          "RBL Bank Ltd",
+          "Rec Ltd",
+          "Shriram Transport Finance Company Ltd",
+          "Steel Authority of India Ltd",
+          "Sun TV Network Ltd",
+          "Supreme Industries Ltd",
+          "Tata Chemicals Ltd",
+          "The New India Assurance Company Ltd",
+          "The Ramco Cements Ltd",
+          "Trent Ltd",
+          "TV18 Broadcast Ltd",
+          "Vodafone Idea Ltd",
+          "Zomato Ltd",
+          "Adani Transmission Ltd",
+          "Affle (India) Ltd",
+          "AIA Engineering Ltd",
+          "Amara Raja Batteries Ltd",
+          "Amber Enterprises India Ltd",
+        ];
+        $(".autoComplete").autocomplete({
+          source: availableSymbols,
+          select: function (event, ui) {
+            // Handle the selection
+          },
+          response: function (event, ui) {
+            if (ui.content.length === 0) {
+              // Show "Company not found" message if the input is not in the availableSymbols list
+              $(".autoComplete").val("Company not found");
+            }
+          },
+        });
+
+        // Clear the input field if the user clicks on it
+        $(".autoComplete").click(function () {
+          $(this).val("");
+        });
+      });
+    </script>
+  </body>
+</html>
