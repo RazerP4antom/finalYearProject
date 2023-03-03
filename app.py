@@ -1,8 +1,25 @@
 from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+import io
+import base64
 import requests
 
 app = Flask(__name__)
+
+def pie_chart(data):
+    plt.pie(data.values(), labels=data.keys(), autopct='%1.1f%%')
+    plt.title('Buy, Hold, Sell')
+
+    # Save the chart to a BytesIO object
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    
+    # Encode the chart as base64 and insert into HTML
+    chart = base64.b64encode(img.getvalue()).decode()
+
+    return chart
 
 def buy_sell_hold(stock_symbol):
     company_name = stock_symbol.lower().replace(" ", "-")
@@ -18,8 +35,11 @@ def buy_sell_hold(stock_symbol):
         buy_sell_hold_percent = buy_sell_hold_percent[:-3] + ' ' + buy_sell_hold_percent[-3:]
         buy_sell_hold.append(buy_sell_hold_percent)
     
+    data_dict = {item.split()[0]: float(item.split()[1].strip('%')) for item in buy_sell_hold}
+    pie = pie_chart(data_dict)
+    
         
-    return buy_sell_hold
+    return pie
 
 
 def research_report_ecotimes(stock_symbol):
@@ -53,9 +73,6 @@ def research_report_ecotimes(stock_symbol):
         else:
             return"Recommendation as per analysts: {}".format(recommendation) 
 
-
-
-    return 
 
 def research_report_icic(stock_symbol):
     # base URL

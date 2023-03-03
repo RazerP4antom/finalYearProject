@@ -9,11 +9,12 @@
   </head>
   <body>
     <h1>Stock Data</h1>
-    <ul>
+    <!-- <ul>
       {% for item in stock_data %}
       <li>{{ item }}</li>
       {% endfor %}
-    </ul>
+    </ul> -->
+    <img src="data:image/png;base64,{{ stock_data }}" />
 
     <h1>Research Report ICIC Direct</h1>
     <p>{{ research_data_icic }}</p>
