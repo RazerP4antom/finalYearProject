@@ -50,31 +50,45 @@ def buy_sell_hold(stock_symbol):
         
     return pie
 
-def historical_closing_price(stock_symbol):
+def historical_closing_price(ticker):
     today = datetime.date.today()
-    with open('Tickers.csv') as csvfile:
-        reader = csv.DictReader(csvfile)
-        rows = list(reader)
-    
-    for row in rows:
-        if row['Company Name'] == stock_symbol:
-            ticker = row['Ticker']
-    
     stock_price = nse.get_history(symbol = ticker, start=date(2022,1,1), end=today)
-    # fig = px.line(stock_price, x=stock_price.index, y='Close', title='Historical Close Price for '+ stock_symbol)
-    # fig.update_xaxes(title_text='Date')
-    # fig.update_yaxes(title_text='Close Price')
-    # fig.show()
-
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=stock_price.index, y=stock_price['Close'], mode='lines'))
-
-    # Convert Plotly chart to JSON and store it in a variable
     chart_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
-    print(chart_json)
-
-
+    # print(chart_json)
     return chart_json
+
+def ratios(ticker):
+
+    url = 'https://www.screener.in/company/'
+    full_url = url + ticker + '/'
+    response = requests.get(full_url)
+
+    html = response.content
+    soup = BeautifulSoup(html, 'html.parser')
+    div = soup.find('div', {'class': 'company-ratios'})
+    ratios = []
+    for li in div.find_all('li'):
+        name = li.find('span', {'class': 'name'}).text.strip()
+        # Exclude 'High / Low' ratio
+        if name == 'High / Low':
+            continue
+        value = li.find('span', {'class': 'number'})
+        if value is not None:
+            # For ratios with currency values, add the rupee symbol and 'Cr.' suffix
+            if 'Market Cap' in name or 'Book Value' in name:
+                value = '₹' + value.text.strip() + ' Cr.'
+            # For ratios with percentage values, add the percentage sign
+            elif 'Dividend Yield' in name or 'ROCE' in name or 'ROE' in name:
+                value = value.text.strip() + '%'
+            else:
+                value = value.text.strip()
+        else:
+            value = li.find('span', {'class': 'value'}).text.strip()
+        ratios.append(f'{name}: {value}')
+
+    return ratios
 
 
 def research_report_ecotimes(stock_symbol):
@@ -155,11 +169,19 @@ def get_stock_data_route():
     stock_data = buy_sell_hold(stock_symbol)
     research_data_icic = research_report_icic(stock_symbol)
     research_data_ecotimes = research_report_ecotimes(stock_symbol)
-    closing_chart = historical_closing_price(stock_symbol)
+    with open('Tickers.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        rows = list(reader)
+    
+    for row in rows:
+        if row['Company Name'] == stock_symbol:
+            ticker = row['Ticker']
+    closing_chart = historical_closing_price(ticker)
+    company_ratios = ratios(ticker)
 
     return render_template('stock_data.html', stock_data=stock_data,research_data_icic=research_data_icic,
                            research_data_ecotimes = research_data_ecotimes,
-                           closing_chart = closing_chart)
+                           closing_chart = closing_chart, company_ratios = company_ratios)
 
 if __name__ == '__main__':
     app.run(debug=True)

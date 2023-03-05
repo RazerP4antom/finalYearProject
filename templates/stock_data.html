@@ -30,6 +30,13 @@
       Plotly.plot('chart',graphs,{});
     </script>
 
+    <h1>Company Ratios</h1>
+    <ul>
+      {% for ratio in company_ratios %}
+      <li>{{ ratio }}</li>
+      {% endfor %}
+    </ul>
+
     <a href="/">Back to form</a>
   </body>
 </html>
