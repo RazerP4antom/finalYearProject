@@ -17,18 +17,29 @@ import csv
 app = Flask(__name__)
 
 def pie_chart(data):
-    plt.pie(data.values(), labels=data.keys(), autopct='%1.1f%%')
-    plt.title('Buy, Hold, Sell')
+    # plt.pie(data.values(), labels=data.keys(), autopct='%1.1f%%')
+    # plt.title('Buy, Hold, Sell')
 
-    # Save the chart to a BytesIO object
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    img.seek(0)
+    # # Save the chart to a BytesIO object
+    # img = io.BytesIO()
+    # plt.savefig(img, format='png')
+    # img.seek(0)
     
-    # Encode the chart as base64 and insert into HTML
-    chart = base64.b64encode(img.getvalue()).decode()
+    # # Encode the chart as base64 and insert into HTML
+    # chart = base64.b64encode(img.getvalue()).decode()
 
-    return chart
+    labels = list(data.keys())
+    values = list(data.values())
+    colors = ['#5cb85c', '#5bc0de', '#d9534f']
+    font_color = 'white'
+    hover_text = '%{percent}'
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, marker=dict(colors=colors), 
+                                 textfont=dict(color=font_color),
+                                 hovertemplate='%{label}: ' + hover_text)])
+    
+    chart_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return chart_json
 
 def buy_sell_hold(stock_symbol):
     company_name = stock_symbol.lower().replace(" ", "-")
@@ -166,7 +177,7 @@ def index():
 @app.route('/get_stock_data', methods=['POST'])
 def get_stock_data_route():
     stock_symbol = request.form['stock_symbol']
-    stock_data = buy_sell_hold(stock_symbol)
+    pie_chart = buy_sell_hold(stock_symbol)
     research_data_icic = research_report_icic(stock_symbol)
     research_data_ecotimes = research_report_ecotimes(stock_symbol)
     with open('Tickers.csv') as csvfile:
@@ -179,7 +190,7 @@ def get_stock_data_route():
     closing_chart = historical_closing_price(ticker)
     company_ratios = ratios(ticker)
 
-    return render_template('stock_data.html', stock_data=stock_data,research_data_icic=research_data_icic,
+    return render_template('stock_data.html', pie_chart=pie_chart,research_data_icic=research_data_icic,
                            research_data_ecotimes = research_data_ecotimes,
                            closing_chart = closing_chart, company_ratios = company_ratios)
 

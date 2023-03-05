@@ -15,7 +15,12 @@
       <li>{{ item }}</li>
       {% endfor %}
     </ul> -->
-    <img src="data:image/png;base64,{{ stock_data }}" />
+    <!-- <img src="data:image/png;base64,{{ stock_data }}" /> -->
+    <div id="pie-chart"></div>
+    <script>
+        var chart_json = {{ pie_chart | safe }};
+        Plotly.plot('pie-chart',chart_json,{});
+    </script>
 
     <h1>Research Report ICIC Direct</h1>
     <p>{{ research_data_icic }}</p>
