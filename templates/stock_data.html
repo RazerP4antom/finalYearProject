@@ -6,6 +6,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </head>
   <body>
     <h1>Stock Data</h1>
@@ -21,6 +22,14 @@
 
     <h1>Research Report Economic Times India</h1>
     <p>{{ research_data_ecotimes }}</p>
+
+    <h1>Historical Closing Price data</h1>
+    <div id="chart"></div>
+    <script>
+      var graphs = {{closing_chart | safe}};
+      Plotly.plot('chart',graphs,{});
+    </script>
+
     <a href="/">Back to form</a>
   </body>
 </html>

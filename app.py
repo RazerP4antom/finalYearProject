@@ -1,9 +1,18 @@
 from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
+import plotly.graph_objs as go
+import pandas as pd
+import plotly
+import json
 import io
 import base64
 import requests
+import nsepy as nse
+from datetime import date
+import plotly.express as px
+import datetime
+import csv
 
 app = Flask(__name__)
 
@@ -40,6 +49,32 @@ def buy_sell_hold(stock_symbol):
     
         
     return pie
+
+def historical_closing_price(stock_symbol):
+    today = datetime.date.today()
+    with open('Tickers.csv') as csvfile:
+        reader = csv.DictReader(csvfile)
+        rows = list(reader)
+    
+    for row in rows:
+        if row['Company Name'] == stock_symbol:
+            ticker = row['Ticker']
+    
+    stock_price = nse.get_history(symbol = ticker, start=date(2022,1,1), end=today)
+    # fig = px.line(stock_price, x=stock_price.index, y='Close', title='Historical Close Price for '+ stock_symbol)
+    # fig.update_xaxes(title_text='Date')
+    # fig.update_yaxes(title_text='Close Price')
+    # fig.show()
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=stock_price.index, y=stock_price['Close'], mode='lines'))
+
+    # Convert Plotly chart to JSON and store it in a variable
+    chart_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
+    print(chart_json)
+
+
+    return chart_json
 
 
 def research_report_ecotimes(stock_symbol):
@@ -120,9 +155,11 @@ def get_stock_data_route():
     stock_data = buy_sell_hold(stock_symbol)
     research_data_icic = research_report_icic(stock_symbol)
     research_data_ecotimes = research_report_ecotimes(stock_symbol)
+    closing_chart = historical_closing_price(stock_symbol)
 
     return render_template('stock_data.html', stock_data=stock_data,research_data_icic=research_data_icic,
-                           research_data_ecotimes = research_data_ecotimes)
+                           research_data_ecotimes = research_data_ecotimes,
+                           closing_chart = closing_chart)
 
 if __name__ == '__main__':
     app.run(debug=True)
