@@ -55,9 +55,22 @@ def buy_sell_hold(stock_symbol):
         buy_sell_hold_percent = buy_sell_hold_percent[:-3] + ' ' + buy_sell_hold_percent[-3:]
         buy_sell_hold.append(buy_sell_hold_percent)
     
-    data_dict = {item.split()[0]: float(item.split()[1].strip('%')) for item in buy_sell_hold}
+    # data_dict = {item.split()[0]: float(item.split()[1].strip('%')) for item in buy_sell_hold}
+
+    data_dict = {}
+    for item in buy_sell_hold:
+        split_items = item.split()
+        if len(split_items) == 2:
+            key = split_items[0]
+            value = split_items[1].strip('%').replace('l', '')
+            if key == 'Sel':
+                key = 'Sell'
+            try:
+                data_dict[key] = float(value)
+            except ValueError:
+                print(f"Unable to convert {value} to float for key {key}")
+
     pie = pie_chart(data_dict)
-    
         
     return pie
 
