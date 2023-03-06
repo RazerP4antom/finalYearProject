@@ -42,6 +42,25 @@
       {% endfor %}
     </ul>
 
+    <h1>Quaterly Results</h1>
+    {{ quaterly_results | safe }}
+
+    <h1>Profit and Loss Statement</h1>
+    {{ profit_loss | safe }}
+
+    <h1>Balance Sheet</h1>
+    {{ balance_sheet | safe }}
+
+    <h1>Cash Flow</h1>
+    {{ cash_flow | safe }}
+
+    <h1>Share Holding</h1>
+    <div id="shareholding-chart"></div>
+    <script>
+        var chart_json = {{ shareholding | safe }};
+        Plotly.plot('shareholding-chart',chart_json,{});
+    </script>
+
     <a href="/">Back to form</a>
   </body>
 </html>
