@@ -1,18 +1,24 @@
 from flask import Flask, render_template, request
 from bs4 import BeautifulSoup
-import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 import pandas as pd
 import plotly
 import json
-import io
-import base64
 import requests
 import nsepy as nse
 from datetime import date
-import plotly.express as px
 import datetime
 import csv
+from GoogleNews import GoogleNews 
+import datetime
+import pandas as pd
+from nltk.stem import WordNetLemmatizer
+from sentiment import *
+from newspaper import Article, ArticleException
+import nltk
+
+lemmatizer = WordNetLemmatizer()
+analyzer = SentimentIntensityAnalyzer()
 
 app = Flask(__name__)
 
@@ -264,7 +270,161 @@ def share_holding_pie_chart(ticker):
 
     return chart_json
 
+def get_headlines(company, start_date, end_date):
+    googlenews = GoogleNews()
+    googlenews.set_time_range(start_date.strftime('%m/%d/%Y'), end_date.strftime('%m/%d/%Y'))
+    googlenews.search(company)
 
+    first_letter_company = company.split()[0]
+    urls_a = []
+    urls_b = []
+    urls_c = []
+    urls_d = []
+
+    for i in range(3):
+        googlenews.get_page(i+1)
+        result = googlenews.result()
+        for item in result:
+            headline = item['title']
+            link = item['link']
+            
+            # Lemmatize the words in the headline
+            words = headline.lower().split()
+            words = [lemmatizer.lemmatize(word) for word in words]
+            headline_lemmatized = ' '.join(words)
+
+            if first_letter_company in headline_lemmatized:
+              if any(keyword in headline_lemmatized for keyword in ['sale', 'cut', 'production', 'vehicle', 'unveil', 'supply chain', 'launch', 'project', 'merger', 'acquisition', 'fraud', 'innovation', 'product', 'technology', 'business', 'strategy', 'strategic', 'expansion', 'partnership', 'joint venture', 'divestment', 'liquidation', 'insider', 'bankruptcy', 'scandal', 'audit', 'ethical', 'issue', 'EV', 'manufacturing', 'stir', 'row', 'acquire', 'raise', 'growth', 'grow', 'partner', 'round', 'sanction', 'add', 'customer', 'charge', 'settle', 'cap', 'probe', 'controversy', 'capacity', 'institution', 'collaboration', 'handover', 'stake', 'rake in', 'receive', 'convene', 'layoff', 'data center', 'subscriber', 'petition', 'fine', 'sack', 'agreement', 'bid', 'bidder', 'asset', 'compensation', 'plant', 'talk', 'output', 'protest']):
+                  if link not in urls_a:
+                      urls_a.append(link)
+              elif any(keyword in headline_lemmatized for keyword in ['retail', 'you', 'shareholder', 'debt', 'return', 'expect', 'trade', 'investor', 'bonus', 'dividend', 'stock market', 'investment', 'investor relation', 'equity market', 'capital market', 'fund manager', 'hedge fund', 'institutional investor', 'high net worth individual', 'HNI', 'security', 'exchange', 'public', 'offering', 'IPO', 'index', 'bond', 'debenture', 'issue', 'dollar', 'sell-off', 'purchase', 'offer', 'FMCG', 'demand', 'consumer', 'recovery', 'pharma', 'profitable', 'portfolio', 'buyback', 'ex-dividend', 'FII', 'player', 'telecom', 'bullish', 'bearish', 'metal', 'windfall', 'realty', 'NCD']):
+                  if link not in urls_b:
+                      urls_b.append(link)
+              elif any(keyword in headline_lemmatized for keyword in ['Q1', 'Q2', 'Q3', 'Q4', 'q1', 'q2', 'q3', 'q4', 'profit', 'loss', 'performance', 'grow', 'earnings', 'quarter', 'quarterly', 'annual', 'yearly', 'underperform', 'tumble', 'cost', 'drop', 'record', 'surge', 'tax', 'outperform']): 
+                  if link not in urls_c:
+                      urls_c.append(link)
+              elif any(keyword in headline_lemmatized for keyword in ['price', 'rise', 'jump', 'fall', 'volatile', 'spurt', 'bearish', 'bullish', 'value', 'target', 'chart', 'rally', '52 week', 'high', 'low', 'trading', 'buy', 'sell', 'hold', 'all-time high']):
+                  if link not in urls_d:
+                      urls_d.append(link)
+        
+    return urls_a, urls_b, urls_c, urls_d
+
+def sentiment_score_A(urlA):
+  if len(urlA) == 0:
+      return("Not enough articles found")
+  else:
+    total_score_A = 0.0
+    total_weight_A = 0.0
+    for item in urlA:
+      try:
+        article = Article(item)
+        article.download()
+        article.parse()
+        sentences = nltk.sent_tokenize(article.text)
+        if len(sentences) > 2:
+          words = article.title.lower().split()
+          words = [lemmatizer.lemmatize(word) for word in words]
+          headline_lemat = ' '.join(words)
+          text = headline_lemat + article.text.lower()
+        else:
+          words = article.title.lower().split()
+          words = [lemmatizer.lemmatize(word) for word in words]
+          headline_lemat = ' '.join(words)
+          text = headline_lemat
+        if any(keyword in text for keyword in ['fraud','evasion','insider', 'scandal', 'audit', 'practices', 'ethical', 'stir', 'row', 'charge', 'settle', 'probe', 'controversy', 'petition', 'fine', 'compensation', 'protest', 'accuse', 'misappropriation', 'scam']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 5
+        elif any(keyword in text for keyword in ['divestment', 'liquidation', 'bankrupt','bankruptcy', 'handover', 'stake', 'asset', 'raid', 'seize', 'insolvent', 'insolvency']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 4
+        elif any(keyword in text for keyword in ['award', 'recognition', 'defect', 'lawsuit', 'merger', 'acquisition', 'consolidation', 'joint venture', 'buyout', 'takeover', 'synergy', 'due diligence', 'bid', 'acquire', 'sell-off', 'partnership', 'partner', 'expansion', 'suspension']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 3
+        elif any(keyword in text for keyword in ['contract', 'project', 'discovery', 'launch', 'unveil', 'investment', 'invest']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 2
+        else:
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 1
+        total_score_A += (sentiment * weight)
+        total_weight_A += weight
+      except ArticleException as e:
+        continue
+    return("{:.4f}".format(total_score_A/total_weight_A))
+
+def sentiment_score_B(urlB):
+  if len(urlB) == 0:
+      return("Not enough articles found")
+  else:
+    total_score_B = 0.0
+    total_weight_B = 0.0
+    for item in urlB:
+      try:
+        article = Article(item)
+        article.download()
+        article.parse()
+        sentences = nltk.sent_tokenize(article.text)
+        if len(sentences) > 2:
+          words = article.title.lower().split()
+          words = [lemmatizer.lemmatize(word) for word in words]
+          headline_lemat = ' '.join(words)
+          text = headline_lemat + article.text.lower()
+        else:
+          words = article.title.lower().split()
+          words = [lemmatizer.lemmatize(word) for word in words]
+          headline_lemat = ' '.join(words)
+          text = headline_lemat
+        if any(keyword in text for keyword in ['FII','institutional', 'foreign','investment', 'IPO', 'dividend', 'ex-dividend', 'PE', 'hedge fund', 'angel', 'venture', 'raise', 'fund']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 4
+        elif any(keyword in text for keyword in ['GST', 'windfall', 'taxation','relaxation', 'subsidy', 'duties', 'customs']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 3
+        elif any(keyword in text for keyword in ['NCD', 'bonds', 'debentures', 'bonus', 'rights']):
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 2
+        else:
+          sentiment = (analyzer.polarity_scores(text)['compound'])
+          weight = 1
+        total_score_B+= (sentiment * weight)
+        total_weight_B += weight
+      except ArticleException as e:
+        continue
+    return("{:.4f}".format(total_score_B/total_weight_B))
+
+def sentiment_score_C(urlC):
+  if len(urlC) == 0:
+      return("Not enough articles found")
+  else:
+    total_score_C = 0.0
+    for item in urlC:
+      try:
+        article = Article(item)
+        article.download()
+        article.parse()
+        text = article.text
+        sentiment = analyzer.polarity_scores(text)['compound']
+        total_score_C += sentiment
+      except ArticleException as e:
+        continue
+    return("{:.4f}".format(total_score_C/len(urlC)))
+
+def sentiment_score_D(urlD):
+  if len(urlD) == 0:
+      return("Not enough articles found")
+  else:
+    total_score_D = 0.0
+    for item in urlD:
+      try:
+        article = Article(item)
+        article.download()
+        article.parse()
+        text = article.text
+        sentiment = analyzer.polarity_scores(text)['compound']
+        total_score_D += sentiment
+      except ArticleException as e:
+        continue
+    return("{:.4f}".format(total_score_D/len(urlD)))
 
 @app.route('/')
 def index():
@@ -279,7 +439,6 @@ def get_stock_data_route():
     with open('Tickers.csv') as csvfile:
         reader = csv.DictReader(csvfile)
         rows = list(reader)
-    
     for row in rows:
         if row['Company Name'] == stock_symbol:
             ticker = row['Ticker']
@@ -291,6 +450,15 @@ def get_stock_data_route():
     cash_flow = cash_flow_table(ticker)
     shareholding = share_holding_pie_chart(ticker)
 
+    start_date = datetime.date.today() - datetime.timedelta(days=40)
+    end_date = datetime.date.today()
+    URLS_a, URLS_b, URLS_c, URLS_d = get_headlines(stock_symbol,start_date,end_date)
+    score_a = sentiment_score_A(URLS_a)
+    score_b = sentiment_score_B(URLS_b)
+    score_c = sentiment_score_C(URLS_c)
+    score_d = sentiment_score_D(URLS_d)
+
+
     return render_template('stock_data.html', pie_chart=pie_chart,research_data_icic=research_data_icic,
                            research_data_ecotimes = research_data_ecotimes,
                            closing_chart = closing_chart, company_ratios = company_ratios,
@@ -298,7 +466,12 @@ def get_stock_data_route():
                            profit_loss = profit_loss,
                            balance_sheet = balance_sheet,
                            cash_flow = cash_flow,
-                           shareholding = shareholding)
+                           shareholding = shareholding,
+                           score_A=score_a, 
+                           score_B=score_b, 
+                           score_C=score_c, 
+                           score_D = score_d
+                           )
 
 if __name__ == '__main__':
     app.run(debug=True)
