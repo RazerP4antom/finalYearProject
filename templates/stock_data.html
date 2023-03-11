@@ -61,11 +61,18 @@
       Plotly.plot('shareholding-chart',chart_json,{});
     </script>
 
-    <h1>News sentiment for {{ stock_symbol }}</h1>
-    <p>Company Image: {{ score_A }}</p>
+    <h1>News sentiment for {{ company }}</h1>
+    <!-- <p>Company Image: {{ score_A }}</p>
     <p>Atmosphere for retail investors: {{ score_B }}</p>
     <p>Quarter performance insight: {{ score_C }}</p>
-    <p>Stock price analysis insights: {{ score_D }}</p>
+    <p>Stock price analysis insights: {{ score_D }}</p> -->
+    <!-- <div class="newsChart"></div>
+    <script>
+      var graphs = {{ news_line | safe}};
+      Plotly.plot('newsChart',graphs,{});
+    </script> -->
+
+    {{ chart_html | safe }}
 
     <a href="/">Back to form</a>
   </body>
