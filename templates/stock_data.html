@@ -22,7 +22,7 @@
       Plotly.plot('pie-chart',chart_json,{});
     </script>
 
-    <h1>Research Report ICIC Direct</h1>
+    <h1>Research Report ICICI Direct</h1>
     <p>{{ research_data_icic }}</p>
 
     <h1>Research Report Economic Times India</h1>
@@ -62,17 +62,17 @@
     </script>
 
     <h1>News sentiment for {{ company }}</h1>
-    <!-- <p>Company Image: {{ score_A }}</p>
+    {{ chart_html | safe }}
+
+    <p>Company Image: {{ score_A }}</p>
     <p>Atmosphere for retail investors: {{ score_B }}</p>
     <p>Quarter performance insight: {{ score_C }}</p>
-    <p>Stock price analysis insights: {{ score_D }}</p> -->
+    <p>Stock price analysis insights: {{ score_D }}</p>
     <!-- <div class="newsChart"></div>
     <script>
       var graphs = {{ news_line | safe}};
       Plotly.plot('newsChart',graphs,{});
     </script> -->
-
-    {{ chart_html | safe }}
 
     <a href="/">Back to form</a>
   </body>
