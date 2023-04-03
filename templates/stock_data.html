@@ -10,12 +10,6 @@
   </head>
   <body>
     <h1>Stock Data</h1>
-    <!-- <ul>
-      {% for item in stock_data %}
-      <li>{{ item }}</li>
-      {% endfor %}
-    </ul> -->
-    <!-- <img src="data:image/png;base64,{{ stock_data }}" /> -->
     <div id="pie-chart"></div>
     <script>
       var chart_json = {{ pie_chart | safe }};
@@ -61,18 +55,12 @@
       Plotly.plot('shareholding-chart',chart_json,{});
     </script>
 
-    <h1>News sentiment for {{ company }}</h1>
-    {{ chart_html | safe }}
 
-    <p>Company Image: {{ score_A }}</p>
-    <p>Atmosphere for retail investors: {{ score_B }}</p>
-    <p>Quarter performance insight: {{ score_C }}</p>
-    <p>Stock price analysis insights: {{ score_D }}</p>
-    <!-- <div class="newsChart"></div>
-    <script>
-      var graphs = {{ news_line | safe}};
-      Plotly.plot('newsChart',graphs,{});
-    </script> -->
+    <p>Company Image: {{ score_a }}</p>
+    <p>Atmosphere for retail investors: {{ score_b }}</p>
+    <p>Quarter performance insight: {{ score_c }}</p>
+    <p>Stock price analysis insights: {{ score_d }}</p>
+   
 
     <a href="/">Back to form</a>
   </body>
