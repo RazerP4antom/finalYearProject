@@ -15,6 +15,10 @@ def pie_chart(data):
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, marker=dict(colors=colors), 
                                  textfont=dict(color=font_color),
                                  hovertemplate='%{label}: ' + hover_text)])
+    fig.update_layout(title={
+        'text': "Groww Recommendation",
+        'font': {'size': 18}
+    })
     
     chart_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 

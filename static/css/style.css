@@ -1,0 +1,249 @@
+body{
+    margin-left: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #26890d, #86bc25);
+  color: transparent;
+  width: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+#cash-flow-header:hover,
+#balance-sheet-header:hover,
+#profit-loss-header:hover,
+#quarterly-results-header:hover {
+  cursor: pointer;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.header:hover{
+  cursor: pointer;
+}
+
+h4{
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+}
+
+p {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+.list-container{
+    margin-bottom: 2rem;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  flex-basis: calc(50% - 2px);
+  margin-bottom: 10px;
+}
+
+.data-table {
+  width: 100%;
+  margin-bottom: 1.5em;
+  border-spacing: 0;
+}
+@media (min-width: 48em) {
+  .data-table {
+    font-size: 0.9em;
+  }
+}
+@media (min-width: 62em) {
+  .data-table {
+    font-size: 1em;
+  }
+}
+.data-table thead {
+  position: absolute;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+@media (min-width: 48em) {
+  .data-table thead {
+    position: relative;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: auto;
+  }
+}
+.data-table thead th {
+  background-color: #26890d;
+  border: 1px solid #86bc25;
+  font-weight: normal;
+  text-align: center;
+  color: white;
+}
+.data-table thead th:first-of-type {
+  text-align: left;
+}
+.data-table tbody,
+.data-table tr,
+.data-table th,
+.data-table td {
+  display: block;
+  padding: 0;
+  text-align: left;
+  white-space: normal;
+}
+@media (min-width: 48em) {
+  .data-table tr {
+    display: table-row;
+  }
+}
+.data-table th,
+.data-table td {
+  padding: 0.5em;
+  vertical-align: middle;
+}
+@media (min-width: 30em) {
+  .data-table th,
+  .data-table td {
+    padding: 0.75em 0.5em;
+  }
+}
+@media (min-width: 48em) {
+  .data-table th,
+  .data-table td {
+    display: table-cell;
+    padding: 0.5em;
+  }
+}
+@media (min-width: 62em) {
+  .data-table th,
+  .data-table td {
+    padding: 0.75em 0.5em;
+  }
+}
+@media (min-width: 75em) {
+  .data-table th,
+  .data-table td {
+    padding: 0.75em;
+  }
+}
+.data-table caption {
+  margin-bottom: 1em;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+}
+@media (min-width: 48em) {
+  .data-table caption {
+    font-size: 1.5em;
+  }
+}
+.data-table tfoot {
+  font-size: 0.8em;
+  font-style: italic;
+}
+@media (min-width: 62em) {
+  .data-table tfoot {
+    font-size: 0.9em;
+  }
+}
+@media (min-width: 48em) {
+  .data-table tbody {
+    display: table-row-group;
+  }
+}
+.data-table tbody tr {
+  margin-bottom: 1em;
+}
+@media (min-width: 48em) {
+  .data-table tbody tr {
+    display: table-row;
+    border-width: 1px;
+  }
+}
+.data-table tbody tr:last-of-type {
+  margin-bottom: 0;
+}
+@media (min-width: 48em) {
+  .data-table tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+}
+.data-table tbody th[scope="row"] {
+  background-color: #26890d;
+  color: white;
+}
+@media (min-width: 30em) {
+  .data-table tbody th[scope="row"] {
+    border-left: 1px solid #86bc25;
+    border-bottom: 1px solid #86bc25;
+  }
+}
+@media (min-width: 48em) {
+  .data-table tbody th[scope="row"] {
+    background-color: transparent;
+    color: #000001;
+    text-align: left;
+  }
+}
+.data-table tbody td {
+  text-align: right;
+}
+@media (min-width: 48em) {
+  .data-table tbody td {
+    border-left: 1px solid #86bc25;
+    border-bottom: 1px solid #86bc25;
+    text-align: center;
+  }
+}
+@media (min-width: 48em) {
+  .data-table tbody td:last-of-type {
+    border-right: 1px solid #86bc25;
+  }
+}
+.data-table tbody td[data-type="currency"] {
+  text-align: right;
+}
+.data-table tbody td[data-title]:before {
+  content: attr(data-title);
+  float: left;
+  font-size: 0.8em;
+  color: rgba(0, 0, 0, 0.54);
+}
+@media (min-width: 30em) {
+  .data-table tbody td[data-title]:before {
+    font-size: 0.9em;
+  }
+}
+@media (min-width: 48em) {
+  .data-table tbody td[data-title]:before {
+    content: none;
+  }
+}
+

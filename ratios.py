@@ -19,8 +19,10 @@ def ratios(ticker):
         value = li.find('span', {'class': 'number'})
         if value is not None:
             # For ratios with currency values, add the rupee symbol and 'Cr.' suffix
-            if 'Market Cap' in name or 'Book Value' in name:
+            if 'Market Cap' in name:
                 value = '₹' + value.text.strip() + ' Cr.'
+            elif 'Book Value' in name or 'Current Price' in name or 'Face Value' in name:
+                value = '₹' + value.text.strip()
             # For ratios with percentage values, add the percentage sign
             elif 'Dividend Yield' in name or 'ROCE' in name or 'ROE' in name:
                 value = value.text.strip() + '%'

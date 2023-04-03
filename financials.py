@@ -17,7 +17,7 @@ def quaterly_table(ticker):
     df['Unnamed: 0'] = df['Unnamed: 0'].str.replace('+', '')
     df = df.rename(columns={'Unnamed: 0': ''})
     table = df.head(11)
-    table_final = table.to_html()
+    table_final = table.to_html(classes="data-table")
 
     return table_final
     
@@ -33,7 +33,7 @@ def profit_loss_table(ticker):
     df['Unnamed: 0'] = df['Unnamed: 0'].str.replace('+', '')
     df = df.rename(columns={'Unnamed: 0': ''})
 
-    table_final = df.to_html()
+    table_final = df.to_html(classes="data-table")
 
     return table_final
     
@@ -49,7 +49,7 @@ def balance_sheet_table(ticker):
     df['Unnamed: 0'] = df['Unnamed: 0'].str.replace('+', '')
     df = df.rename(columns={'Unnamed: 0': ''})
 
-    table_final = df.to_html()
+    table_final = df.to_html(classes="data-table")
 
     return table_final
 
@@ -65,7 +65,7 @@ def cash_flow_table(ticker):
     df['Unnamed: 0'] = df['Unnamed: 0'].str.replace('+', '')
     df = df.rename(columns={'Unnamed: 0': ''})
 
-    table_final = df.to_html()
+    table_final = df.to_html(classes="data-table")
 
     return table_final
 

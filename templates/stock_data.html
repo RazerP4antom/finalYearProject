@@ -2,66 +2,143 @@
 <html>
   <head>
     <title>Stock Data</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='styles.css') }}"
-    />
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <script src="../static/js/script.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <h1>Stock Data</h1>
-    <div id="pie-chart"></div>
-    <script>
-      var chart_json = {{ pie_chart | safe }};
-      Plotly.plot('pie-chart',chart_json,{});
-    </script>
+    <h1>{{ stock_symbol }}</h1>
+    <div class="list-container">
+      <ul class="list">
+        {% for ratio in company_ratios %}
+        <li>{{ ratio }}</li>
+        {% endfor %}
+      </ul>
+    </div>
 
-    <h1>Research Report ICICI Direct</h1>
-    <p>{{ research_data_icic }}</p>
-
-    <h1>Research Report Economic Times India</h1>
-    <p>{{ research_data_ecotimes }}</p>
-
-    <h1>Historical Closing Price data</h1>
+    <br />
     <div id="chart"></div>
     <script>
       var graphs = {{closing_chart | safe}};
       Plotly.plot('chart',graphs,{});
     </script>
 
-    <h1>Company Ratios</h1>
-    <ul>
-      {% for ratio in company_ratios %}
-      <li>{{ ratio }}</li>
-      {% endfor %}
-    </ul>
+    <br />
+    <h1 class="quarterly-results-header" id="quarterly-results-header">
+      Quarterly Results <i class="arrow down"></i>
+    </h1>
 
-    <h1>Quaterly Results</h1>
-    {{ quaterly_results | safe }}
+    <div id="quarterly-results-content" style="display: none">
+      {{ quaterly_results | safe }}
+    </div>
+    <script></script>
 
-    <h1>Profit and Loss Statement</h1>
-    {{ profit_loss | safe }}
+    <br />
+    <h1 class="profit-loss-header" id="profit-loss-header">
+      Profit and Loss Statement <i class="arrow down"></i>
+    </h1>
 
-    <h1>Balance Sheet</h1>
-    {{ balance_sheet | safe }}
+    <div id="profit-loss-content" style="display: none">
+      {{ profit_loss | safe }}
+    </div>
+    <script></script>
 
-    <h1>Cash Flow</h1>
-    {{ cash_flow | safe }}
+    <br />
+    <h1 class="balance-sheet-header" id="balance-sheet-header">
+      Balance Sheet <i class="arrow down"></i>
+    </h1>
 
-    <h1>Share Holding</h1>
+    <div id="balance-sheet-content" style="display: none">
+      {{ balance_sheet | safe }}
+    </div>
+    <script></script>
+
+    <br />
+    <h1 class="cash-flow-header" id="cash-flow-header">
+      Cash Flow <i class="arrow down"></i>
+    </h1>
+
+    <div id="cash-flow-content" style="display: none">
+      {{ cash_flow | safe }}
+    </div>
+    <script></script>
+
+    <br />
     <div id="shareholding-chart"></div>
     <script>
       var chart_json = {{ shareholding | safe }};
       Plotly.plot('shareholding-chart',chart_json,{});
     </script>
 
+    <br /><br />
+    <h1>Research Report ICICI Direct</h1>
+    <p>{{ research_data_icic }}</p>
 
-    <p>Company Image: {{ score_a }}</p>
+    <h1>Research Report Economic Times India</h1>
+    <p>{{ research_data_ecotimes }}</p>
+
+    <br />
+    <div id="pie-chart"></div>
+    <script>
+      var chart_json = {{ pie_chart | safe }};
+      Plotly.plot('pie-chart',chart_json,{});
+    </script>
+
+    <!-- <p>Company Image: {{ score_a }}</p>
     <p>Atmosphere for retail investors: {{ score_b }}</p>
     <p>Quarter performance insight: {{ score_c }}</p>
     <p>Stock price analysis insights: {{ score_d }}</p>
-   
+    -->
 
+    <br /><br />
     <a href="/">Back to form</a>
+    <script>
+      $(document).ready(function () {
+        $("#quarterly-results-header").click(function () {
+          if ($("#quarterly-results-content").is(":visible")) {
+            $("#quarterly-results-content").slideUp("slow");
+            $(this).removeClass("open");
+          } else {
+            $("#quarterly-results-content").slideDown("slow");
+            $(this).addClass("open");
+          }
+        });
+      });
+
+      $(document).ready(function () {
+        $("#profit-loss-header").click(function () {
+          if ($("#profit-loss-content").is(":visible")) {
+            $("#profit-loss-content").slideUp("slow");
+            $(this).removeClass("open");
+          } else {
+            $("#profit-loss-content").slideDown("slow");
+            $(this).addClass("open");
+          }
+        });
+      });
+
+      $(document).ready(function () {
+        $("#balance-sheet-header").click(function () {
+          if ($("#balance-sheet-content").is(":visible")) {
+            $("#balance-sheet-content").slideUp("slow");
+            $(this).removeClass("open");
+          } else {
+            $("#balance-sheet-content").slideDown("slow");
+            $(this).addClass("open");
+          }
+        });
+      });
+
+      $(document).ready(function () {
+        $("#cash-flow-header").click(function () {
+          if ($("#cash-flow-content").is(":visible")) {
+            $("#cash-flow-content").slideUp("slow");
+          } else {
+            $("#cash-flow-content").slideDown("slow");
+          }
+        });
+      });
+    </script>
   </body>
 </html>
