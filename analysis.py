@@ -51,7 +51,7 @@ def sentiment_score_A(urlA):
         total_weight_A += weight
       except ArticleException as e:
         continue
-    return("{:.4f}".format(total_score_A/total_weight_A))
+    return float(("{:.4f}".format(total_score_A/total_weight_A)))
 
 def sentiment_score_B(urlB):
   if len(urlB) == 0:
@@ -91,7 +91,7 @@ def sentiment_score_B(urlB):
         total_weight_B += weight
       except ArticleException as e:
         continue
-    return("{:.4f}".format(total_score_B/total_weight_B))
+    return float(("{:.4f}".format(total_score_B/total_weight_B)))
   
 def sentiment_score_C(urlC):
   if len(urlC) == 0:
@@ -108,7 +108,7 @@ def sentiment_score_C(urlC):
         total_score_C += sentiment
       except ArticleException as e:
         continue
-    return("{:.4f}".format(total_score_C/len(urlC)))
+    return float("{:.4f}".format(total_score_C/len(urlC)))
   
 def sentiment_score_D(urlD):
   if len(urlD) == 0:
@@ -125,7 +125,7 @@ def sentiment_score_D(urlD):
         total_score_D += sentiment
       except ArticleException as e:
         continue
-    return("{:.4f}".format(total_score_D/len(urlD)))
+    return float("{:.4f}".format(total_score_D/len(urlD)))
   
 def get_headlines(company):
 
