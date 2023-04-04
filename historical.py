@@ -12,11 +12,7 @@ def historical_closing_price(ticker):
     fig.add_trace(go.Scatter(x=df.index, y=df['Close'], mode='lines'))
     fig.update_layout(title={
         'text': "Historical Stock Price",
-        'font': {'size': 18},
-        'x': 0.5,
-        'y': 0.9,
-        'xanchor': 'center',
-        'yanchor': 'top'
+        'font': {'size': 18}
     })
     chart_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
     return chart_json

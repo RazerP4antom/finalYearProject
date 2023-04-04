@@ -17,7 +17,11 @@ def pie_chart(data):
                                  hovertemplate='%{label}: ' + hover_text)])
     fig.update_layout(title={
         'text': "Groww Recommendation",
-        'font': {'size': 18}
+        'font': {'size': 18},
+        'x': 0.5,
+        'y': 0.9,
+        'xanchor': 'center',
+        'yanchor': 'top'
     })
     
     chart_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)

@@ -1,11 +1,33 @@
-body{
-    margin-left: 1rem;
+body {
+  margin-left: 1rem;
+  padding-left: 2rem;
+  overflow-x: hidden;
 }
 
-h1 {
+h1{
   font-size: 2.5rem;
   font-weight: 600;
+  background-image: linear-gradient(to left, #208806, #81bd12);
+  color: transparent;
+  width: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
   background-image: linear-gradient(to left, #26890d, #86bc25);
+  color: transparent;
+  width: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+} */
+
+h2{
+  font-size: 1.5rem;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #208806, #81bd12);
   color: transparent;
   width: 100%;
   background-clip: text;
@@ -31,13 +53,13 @@ h1 {
   -webkit-transform: rotate(45deg);
 }
 
-.header:hover{
+.header:hover {
   cursor: pointer;
 }
 
-h4{
-    font-family: "Open Sans", sans-serif;
-    text-align: center;
+h4 {
+  font-family: "Open Sans", sans-serif;
+  text-align: center;
 }
 
 p {
@@ -47,8 +69,11 @@ p {
   margin-bottom: 1em;
 }
 
-.list-container{
-    margin-bottom: 2rem;
+.list-container {
+  margin-top: 5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .list {
@@ -56,8 +81,16 @@ p {
   flex-wrap: wrap;
   justify-content: space-between;
   list-style: none;
-  margin: 0;
+  width: 58%;
   padding: 0;
+}
+
+.ratio{
+  flex-basis: 60%;
+}
+
+.about{
+  flex-basis: 40%;
 }
 
 .list li {
@@ -247,3 +280,31 @@ p {
   }
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.research_report {
+  margin-top: 5rem;
+  width: 38%;
+}
+
+#pie-chart {
+  width: 58%;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+      flex-wrap: wrap;
+  }
+  
+  .research-reports {
+      width: 100%;
+  }
+  
+  #pie-chart {
+      width: 100%;
+  }
+}

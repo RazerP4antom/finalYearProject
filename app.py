@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from threading import Thread
 
 import csv
+from about import *
 from groww import *
 from icici import *
 from ecotimes import *
@@ -35,6 +36,7 @@ def get_stock_data_route():
         if row['Company Name'] == stock_symbol:
             ticker = row['Ticker']
 
+    about= about_company(ticker)
     closing_chart = historical_closing_price(ticker)
     company_ratios = ratios(ticker)
     quaterly_results = quaterly_table(ticker)
@@ -57,6 +59,7 @@ def get_stock_data_route():
 
     return render_template('stock_data.html',
                            stock_symbol = stock_symbol,
+                           about = about,
                            pie_chart=pie_chart,
                            research_data_icic=research_data_icic,
                            research_data_ecotimes = research_data_ecotimes,

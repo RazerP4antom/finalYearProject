@@ -8,16 +8,22 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-    <h1>{{ stock_symbol }}</h1>
+    <h1 class="title_heading">{{ stock_symbol }}</h1>
     <div class="list-container">
-      <ul class="list">
-        {% for ratio in company_ratios %}
-        <li>{{ ratio }}</li>
-        {% endfor %}
-      </ul>
+      <div class="ratio">
+        <h2>Company Ratios</h2>
+        <ul class="list">
+          {% for ratio in company_ratios %}
+          <li>{{ ratio }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="about">
+        <h2>About Company</h2>
+        <p>{{ about }}</p>
+      </div>
     </div>
 
-    <br />
     <div id="chart"></div>
     <script>
       var graphs = {{closing_chart | safe}};
@@ -25,9 +31,9 @@
     </script>
 
     <br />
-    <h1 class="quarterly-results-header" id="quarterly-results-header">
+    <h2 class="quarterly-results-header" id="quarterly-results-header">
       Quarterly Results <i class="arrow down"></i>
-    </h1>
+    </h2>
 
     <div id="quarterly-results-content" style="display: none">
       {{ quaterly_results | safe }}
@@ -35,9 +41,9 @@
     <script></script>
 
     <br />
-    <h1 class="profit-loss-header" id="profit-loss-header">
+    <h2 class="profit-loss-header" id="profit-loss-header">
       Profit and Loss Statement <i class="arrow down"></i>
-    </h1>
+    </h2>
 
     <div id="profit-loss-content" style="display: none">
       {{ profit_loss | safe }}
@@ -45,9 +51,9 @@
     <script></script>
 
     <br />
-    <h1 class="balance-sheet-header" id="balance-sheet-header">
+    <h2 class="balance-sheet-header" id="balance-sheet-header">
       Balance Sheet <i class="arrow down"></i>
-    </h1>
+    </h2>
 
     <div id="balance-sheet-content" style="display: none">
       {{ balance_sheet | safe }}
@@ -55,9 +61,9 @@
     <script></script>
 
     <br />
-    <h1 class="cash-flow-header" id="cash-flow-header">
+    <h2 class="cash-flow-header" id="cash-flow-header">
       Cash Flow <i class="arrow down"></i>
-    </h1>
+    </h2>
 
     <div id="cash-flow-content" style="display: none">
       {{ cash_flow | safe }}
@@ -72,21 +78,23 @@
     </script>
 
     <br /><br />
-    <h1>Research Report ICICI Direct</h1>
-    <p>{{ research_data_icic }}</p>
 
-    <h1>Research Report Economic Times India</h1>
-    <p>{{ research_data_ecotimes }}</p>
+    <h1>Research Reports Insights</h1>
+    <div class="container">
+      <div class="research_report">
+        <h2>Research Report ICICI Direct</h2>
+        <p>{{ research_data_icic }}</p>
+        <br>
+        <h2>Research Report Economic Times India</h2>
+        <p>{{ research_data_ecotimes }}</p>
+      </div>
 
-    <br />
-    <div id="pie-chart"></div>
-    <script>
-      var chart_json = {{ pie_chart | safe }};
-      Plotly.plot('pie-chart',chart_json,{});
-    </script>
-
-    
-   
+      <div id="pie-chart"></div>
+      <script>
+        var chart_json = {{ pie_chart | safe }};
+        Plotly.plot('pie-chart',chart_json,{});
+      </script>
+    </div>
 
     <h1>Sentiment analysis</h1>
     <p>Company Image: {{ score_a }}</p>
@@ -94,9 +102,11 @@
     <p>Quarter Performance Insight: {{ score_c }}</p>
     <p>Trading Call: {{ score_d }}</p>
     <p>{{ sentiment_output }}</p>
-    <br><br>
-    <p>Trading output indicates a very short term output (less than a week) use sparingly while 
-        analysing longer term decisions (a month to a year)</p>
+    <br /><br />
+    <p>
+      Trading output indicates a very short term output (less than a week) use
+      sparingly while analysing longer term decisions (a month to a year)
+    </p>
     <p>Trading Score: {{ trading_output }}</p>
 
     <br /><br />
