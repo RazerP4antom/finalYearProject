@@ -14,6 +14,27 @@ h1{
   -webkit-background-clip: text;
 }
 
+#parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#loading {
+  border: 16px solid #81bd12; /* Light grey */
+  border-top: 16px solid #208806; /* Blue */
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  animation: spin 2s linear infinite;
+  margin: 10rem auto 0;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* h1 {
   font-size: 1.5rem;
   font-weight: 600;

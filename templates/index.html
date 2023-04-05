@@ -11,18 +11,25 @@
     />
   </head>
   <body>
-    <h1 class="title_heading">Get Stock Data</h1>
-    <form method="POST" action="{{ url_for('get_stock_data_route') }}">
-      <label for="stock_symbol">Enter Company Name:</label>
-      <input
-        type="text"
-        id="stock_symbol"
-        class="autoComplete"
-        name="stock_symbol"
-        required
-      />
-      <button type="submit">Get data</button>
-    </form>
+    <div id="parent_container">
+      <h1 class="title_heading">Get Stock Data</h1>
+      <form
+        method="POST"
+        action="{{ url_for('get_stock_data_route') }}"
+        onsubmit="showPreloader(event)"
+      >
+        <label for="stock_symbol">Enter Company Name:</label>
+        <input
+          type="text"
+          id="stock_symbol"
+          class="autoComplete"
+          name="stock_symbol"
+          required
+        />
+        <button type="submit">Get data</button>
+      </form>
+    </div>
+    <div id="loading" style="display: none"></div>
 
     <script>
       $(function () {
@@ -127,6 +134,7 @@
           "Bosch Ltd",
           "Zomato Ltd",
         ];
+
         $(".autoComplete").autocomplete({
           source: availableSymbols,
           select: function (event, ui) {
@@ -136,6 +144,9 @@
             if (ui.content.length === 0) {
               // Show "Company not found" message if the input is not in the availableSymbols list
               $(".autoComplete").val("Company not found");
+              $("button[type='submit']").prop("disabled", true);
+            } else {
+              $("button[type='submit']").prop("disabled", false);
             }
           },
         });
@@ -143,8 +154,19 @@
         // Clear the input field if the user clicks on it
         $(".autoComplete").click(function () {
           $(this).val("");
+          $("button[type='submit']").prop("disabled", false);
         });
       });
+
+      function showPreloader(event) {
+        event.preventDefault();
+        const input = document.getElementById("stock_symbol");
+        const value = input.value.trim();
+        if (value) {
+          document.getElementById("loading").style.display = "block";
+          event.target.submit();
+        }
+      }
     </script>
   </body>
 </html>

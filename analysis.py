@@ -133,7 +133,7 @@ def get_headlines(company):
         "q": company,
         "tbm": "nws",
         "location": "India",
-        "api_key": "562c5937810dfdce1353fdaf0ab2668339295eccbc09aa88d6007990cb74581f" }
+        "api_key": "4718faafe284c9d01bcb0590b948cb7968845e442996c3f54ff8135bef9d0553" }
 
     # Define the date ranges
     today = datetime.now()
