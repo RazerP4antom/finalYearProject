@@ -84,16 +84,28 @@
       <div class="research_report">
         <h2>Research Report ICICI Direct</h2>
         <p>{{ research_data_icic }}</p>
-        <br>
+        <br />
         <h2>Research Report Economic Times India</h2>
         <p>{{ research_data_ecotimes }}</p>
       </div>
 
+      {% if pie_chart is not none and 'Report' not in pie_chart %}
       <div id="pie-chart"></div>
       <script>
         var chart_json = {{ pie_chart | safe }};
         Plotly.plot('pie-chart',chart_json,{});
       </script>
+      {% endif %}
+
+      <!-- {% if 'Report' not in pie_chart %}
+      <div id="pie-chart"></div>
+      <script>
+        var chart_json = {{ pie_chart | safe }};
+        Plotly.plot('pie-chart', chart_json, {});
+      </script> -->
+      <!-- {% else %}
+      <p>{{ pie_chart }}</p>
+      {% endif %} -->
     </div>
 
     <h1>Sentiment analysis</h1>

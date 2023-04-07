@@ -51,20 +51,19 @@ BOOSTER_DICT = \
      "scarce": B_DECR, "scarcely": B_DECR, "slight": B_DECR, "slightly": B_DECR, "somewhat": B_DECR,
      "sort of": B_DECR, "sorta": B_DECR, "sortof": B_DECR, "sort-of": B_DECR}
 
-# check for sentiment laden idioms that do not contain lexicon words (future work, not yet implemented)
 SENTIMENT_LADEN_IDIOMS = {"cut the mustard": 2, "hand to mouth": -2,
                           "back handed": -2, "blow smoke": -2, "blowing smoke": -2,
                           "upper hand": 1, "break a leg": 2,
                           "cooking with gas": 2, "in the black": 2, "in the red": -2,
                           "on the ball": 2, "under the weather": -2}
 
-# check for special case idioms and phrases containing lexicon words
+
 SPECIAL_CASES = {"the shit": 3, "the bomb": 3, "bad ass": 1.5, "badass": 1.5, "bus stop": 0.0,
                  "yeah right": -2, "kiss of death": -1.5, "to die for": 3,
                  "beating heart": 3.1, "broken heart": -2.9 }
 
 
-# #Static methods# #
+
 
 def negated(input_words, include_nt=True):
     
@@ -377,9 +376,9 @@ class SentimentIntensityAnalyzer(object):
         neu_count = 0
         for sentiment_score in sentiments:
             if sentiment_score > 0:
-                pos_sum += (float(sentiment_score) + 1)  # compensates for neutral words that are counted as 1
+                pos_sum += (float(sentiment_score) + 1)  
             if sentiment_score < 0:
-                neg_sum += (float(sentiment_score) - 1)  # when used with math.fabs(), compensates for neutrals
+                neg_sum += (float(sentiment_score) - 1) 
             if sentiment_score == 0:
                 neu_count += 1
         return pos_sum, neg_sum, neu_count
@@ -387,7 +386,7 @@ class SentimentIntensityAnalyzer(object):
     def score_valence(self, sentiments, text):
         if sentiments:
             sum_s = float(sum(sentiments))
-            # compute and add emphasis from punctuation in text
+           
             punct_emph_amplifier = self._punctuation_emphasis(text)
             if sum_s > 0:
                 sum_s += punct_emph_amplifier
@@ -395,7 +394,7 @@ class SentimentIntensityAnalyzer(object):
                 sum_s -= punct_emph_amplifier
 
             compound = normalize(sum_s)
-            # discriminate between positive, negative and neutral sentiment scores
+           
             pos_sum, neg_sum, neu_count = self._sift_sentiment_scores(sentiments)
 
             if pos_sum > math.fabs(neg_sum):

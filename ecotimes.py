@@ -5,6 +5,8 @@ import re
 def research_report_ecotimes(stock_symbol):
     if (stock_symbol == "Cipla Ltd"):
         full_url = "https://economictimes.indiatimes.com/cipla-ltd/stocks/companyid-13917.cms"
+    elif(stock_symbol == "Reliance Industries Ltd"):
+        full_url = "https://economictimes.indiatimes.com/reliance-industries-ltd/stocks/companyid-13215.cms"
     else:
         stock_symbol = re.sub(r'\b\s*and\s*\b', ' ', stock_symbol)
         first_letter = stock_symbol[0]

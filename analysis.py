@@ -1,7 +1,6 @@
 from serpapi import GoogleSearch
 from datetime import datetime, timedelta 
 import pandas as pd
-import time
 import nltk
 from nltk.stem import WordNetLemmatizer
 from newspaper import Article, ArticleException

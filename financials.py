@@ -13,7 +13,6 @@ def quaterly_table(ticker):
     soup = BeautifulSoup(r.content, 'html.parser')
     table = soup.find('table', {'class': 'data-table'})
     df = pd.read_html(str(table))[0]
-    # df.drop('Raw PDF', axis=0, inplace=True)
     df['Unnamed: 0'] = df['Unnamed: 0'].str.replace('+', '')
     df = df.rename(columns={'Unnamed: 0': ''})
     table = df.head(11)
@@ -26,13 +25,11 @@ def profit_loss_table(ticker):
     full_url = url + ticker + '/#profit-loss'
     r = requests.get(full_url)
     soup = BeautifulSoup(r.content, 'html.parser')
-
     section = soup.find('section', {'id': 'profit-loss'})
     table = section.find('table', {'class': 'data-table'})
     df = pd.read_html(str(table))[0]
     df['Unnamed: 0'] = df['Unnamed: 0'].str.replace('+', '')
     df = df.rename(columns={'Unnamed: 0': ''})
-
     table_final = df.to_html(classes="data-table")
 
     return table_final

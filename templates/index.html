@@ -12,21 +12,26 @@
   </head>
   <body>
     <div id="parent_container">
-      <h1 class="title_heading">Get Stock Data</h1>
+      <h1 class="title_heading">WealthTracker</h1>
+      <p class="home_page_para">
+        Your turn-key solution to qualitative stock market investment decisions.
+        Get reliable and affordable trading advice from trusted financial news
+        sources and research reports, all in one easy-to-use dashboard.
+      </p>
       <form
         method="POST"
         action="{{ url_for('get_stock_data_route') }}"
         onsubmit="showPreloader(event)"
       >
-        <label for="stock_symbol">Enter Company Name:</label>
         <input
           type="text"
           id="stock_symbol"
-          class="autoComplete"
+          class="autoComplete effect-11"
           name="stock_symbol"
+          placeholder="Enter Company Name: "
           required
-        />
-        <button type="submit">Get data</button>
+        /><span class="focus-bg"></span>
+        <button class="submit_btn" type="submit">Get data</button>
       </form>
     </div>
     <div id="loading" style="display: none"></div>
