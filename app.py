@@ -22,7 +22,6 @@ def index():
 @app.route('/get_stock_data', methods=['POST'])
 def get_stock_data_route():
 
-
     stock_symbol = request.form['stock_symbol']
     pie_chart = buy_sell_hold(stock_symbol)
     research_data_icic = research_report_icic(stock_symbol)

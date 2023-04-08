@@ -109,17 +109,41 @@
     </div>
 
     <h1>Sentiment analysis</h1>
-    <p>Company Image: {{ score_a }}</p>
-    <p>Medium Term Stock Outlook for Investors: {{ score_b }}</p>
-    <p>Quarter Performance Insight: {{ score_c }}</p>
-    <p>Trading Call: {{ score_d }}</p>
-    <p><strong>{{ sentiment_output }}</strong></p>
-    <br /><br />
+    <p style="display: inline-block;">Company Image: {{ score_a }}</p>
+    {% if -1.0 <= score_a <= -0.3 %}
+      <span>(Bad)</span>
+    {% elif -0.3 < score_a <= 0.5 %}
+      <span>(Neutral)</span>
+    {% else %}
+      <span>(Great)</span>
+    {% endif %} <br>
+
+    <p style="display: inline-block;">Medium Term Stock Outlook for Investors: {{ score_b }}</p>
+    {% if -1.0 <= score_b <= -0.3 %}
+      <span>(Sell)</span>
+    {% elif -0.3 < score_b <= 0.5 %}
+      <span>(Neutral)</span>
+    {% else %}
+      <span>(Bullish)</span>
+    {% endif %} <br>
+    
+    <p style="display: inline-block;">Quarter Performance Insight: {{ score_c }}</p>
+    {% if -1.0 <= score_c <= -0.1 %}
+      <span>(Bad)</span>
+    {% elif -0.1 < score_c <= 0.5 %}
+      <span>(Neutral)</span>
+    {% else %}
+      <span>(Great)</span>  
+    {% endif %}
+    <br>
+    <p><i>{{ sentiment_output }}</i></p><br><br>
+
+    <p>Trading Score: {{ score_d }}</p>
     <p>
       Trading output indicates a very short term output (less than a week) use
       sparingly while analysing longer term decisions (a month to a year)
     </p>
-    <p>Trading Score: {{ trading_output }}</p>
+    <p>Trading Call: {{ trading_output }}</p>
 
     <br /><br />
     <a href="/">Back to form</a>
