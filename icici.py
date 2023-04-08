@@ -3,7 +3,7 @@ import requests
 
 
 def research_report_icic(stock_symbol):
-    # base URL
+
     base_url = "https://www.icicidirect.com/stocks/"
     company_extension = stock_symbol.lower().replace(" ", "-") + "-share-price" 
     full_url = base_url + company_extension
@@ -16,7 +16,6 @@ def research_report_icic(stock_symbol):
     if div:
         a_tag = div.find("a", text="Click here for full recommendation")
         full_recommendation_link = a_tag.get("href")
-        # print(full_recommendation_link)
         response1 = requests.get(full_recommendation_link)
         html_content1 = response1.text
 
